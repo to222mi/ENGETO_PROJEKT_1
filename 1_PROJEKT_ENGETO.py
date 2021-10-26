@@ -80,7 +80,7 @@ pocty_slov = dict()
 
 # rozdel text na slova
 # spocitam vyskyty pre slova
-for slovo in TEXTS[text-1].split():
+for slovo in TEXTS[int(text)-1].split():
     vycistena_slova.append(
         slovo.strip(",.:;")
     )
