@@ -65,9 +65,6 @@ text = input(f'Enter a number btw. 1 and {len(TEXTS)} to select: ')
 if text in range(1,len(TEXTS)+1) and text.isnumericumeric():
     print(cara)
 
-#if text in range(1,len(TEXTS)+1):
-#    print(cara)   
-
 else:
     print(
         f'Such text not available, quitting...',
