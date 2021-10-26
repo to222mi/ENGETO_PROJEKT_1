@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[53]:
+# In[1]:
 
 
 TEXTS = ['''
@@ -34,50 +34,40 @@ in modern oceans. Other fish such as paddlefish,
 garpike and stingray are also present.'''
 ]
 
-cara = '-'*60
-hlavicka = ('LEN','OCCURENCES','NR.' )
+cara = '-' * 60
 
-users = dict(
-    bob = dict(
-        password='123'
-    ),
-    ann = dict(
-        password='pass123'
-    ),
-    mike = dict(
-        password='password123'
-    ),
-    liz = dict(
-        password='pass123'    
-    )
-)
+users ={
+    'bob': '123',
+    'ann': 'pass123',
+    'mike': 'password123',
+    'liz': 'pass123'
+}
 
-# uzivatel zada jmeno + overeni
+# uzivatel zada jmeno + heslo a probehne overeni
 username = input('input username:')
+passw = input('enter paeeword: ')
 
-# overit uzivatele
-if username in users:
-    passw = input('input password: ')
-    if passw == str(users[f'{username}']['password']):
-        print(
-            cara,        
-            f'Welcome to the app, {username}',
-            f'We have {len(TEXTS)} texts to be analyzed',
-            cara,
-            sep= '\n'
-        )
-    else:
-        print('invalid password, quitting...')
-        quit()
+if passw == users.get(username):
+    print(
+        cara,        
+        f'Welcome to the app, {username}',
+        f'We have {len(TEXTS)} texts to be analyzed',
+        cara,
+        sep= '\n'
+    )
 else:
-    print('username not in list of users, quitting...')
+    print('invalid credentials, quitting...')
     quit()
 
-    
 # vyber text
-text = int(input(f'Enter a number btw. 1 and {len(TEXTS)} to select: '))
-if text in range(1,len(TEXTS)+1):
-    print(cara)   
+text = input(f'Enter a number btw. 1 and {len(TEXTS)} to select: ')
+
+if text in range(1,len(TEXTS)+1) and text.isnumericumeric():
+    print(cara)
+
+#if text in range(1,len(TEXTS)+1):
+#    print(cara)   
+
 else:
     print(
         f'Such text not available, quitting...',
@@ -85,15 +75,22 @@ else:
         sep='\n'
     )
     quit()
-    
+
 # premenna na ulozenie slov z textu
 vycistena_slova = list()
 
+pocty_slov = dict()  
+
 # rozdel text na slova
+# spocitam vyskyty pre slova
 for slovo in TEXTS[text-1].split():
     vycistena_slova.append(
         slovo.strip(",.:;")
     )
+    if len(slovo) not in pocty_slov:
+        pocty_slov[len(slovo)] = 1
+    else:
+        pocty_slov[len(slovo)] = pocty_slov[len(slovo)] + 1
 
 # premenne na ukladanie titlecase, uppercase, lowercase, numeric a summ
 titulni_prvni_pismeno = list()
@@ -112,12 +109,8 @@ for slovo in vycistena_slova:
         male_pismena.append(slovo)
     elif slovo.isnumeric():
         numericke.append(slovo)
-        
-#spocitaj vsetky cisla
-for cislo in numericke:
-    suma = suma +int(cislo) 
-    
-        
+        suma = suma + int(slovo) 
+
 print(
     f'There are {len(vycistena_slova)} words in the selected text.',
     f'There are {len(titulni_prvni_pismeno)} titlecase words',
@@ -128,26 +121,22 @@ print(
     sep='\n'
 )
 
-# spocitam vyskyty pre kazde slovo
-pocty_slov: dict = dict()
-
-for slovo in vycistena_slova:
-    if len(slovo) not in pocty_slov:
-        pocty_slov[len(slovo)] = 1
-    else:
-        pocty_slov[len(slovo)] = pocty_slov[len(slovo)] + 1
-
 print(
     cara,
-    f"{'     |     '.join(hlavicka)}",
+    f'LEN     |     OCCURENCES     |     NR.',
     cara,
     sep='\n'
 )
 
-# zoradit slovnik vzostupne
-pocty_slov_zoradene = sorted(pocty_slov.items())
-
 # vypis pocty slov a zobraz graf
-for pocet in pocty_slov_zoradene:
-    print(pocet[0],(4-len(str(pocet[0])))*' ','|', int(pocet[1])*'*',' '*(20-int(pocet[1])),'|', pocet[1])
+for pocet in sorted(pocty_slov.items()):
+    print(
+        pocet[0],
+        (4-len(str(pocet[0])))*' ',
+        '|',
+        int(pocet[1])*'*',
+        ' '*(20-int(pocet[1])),
+        '|',
+        pocet[1]
+    )
 
